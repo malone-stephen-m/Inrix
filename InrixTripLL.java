@@ -16,27 +16,32 @@ public class InrixTripLL {
 	 * @param data; a string array of node data
 	 */
 	public void add(String[] data) {
-		InrixNode node = new InrixNode(data);
-		if (head == null) {
-			head = node;
-			tail = node;
-		} else {
-			tail.next = node;
-			tail = node;
+		try {
+			InrixNode node = new InrixNode(data);
+			if (head == null) {
+				head = node;
+				tail = node;
+			} else {
+				tail.next = node;
+				tail = node;
+			}
+			size++;
+		} catch (Exception e) {
+			
 		}
 	}
 	/**
 	 * returns the time between the first and last node in seconds
 	 * @return time duration
 	 */
-	public float getTripDuration() {
-		return tail.time - head.time;
+	public Double getTripDuration() {
+		return (tail.time - head.time) * 24 * 60 * 60;
 	}
 	/** 
 	 * returns the average time delay between node points
 	 * @return
 	 */
-	public float getAvgTimeDelay() {
+	public Double getAvgTimeDelay() {
 		return getTripDuration()/size;
 	}
 	public InrixTripLL deepCopy() {
