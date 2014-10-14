@@ -32,6 +32,30 @@ public class InrixReader {
 	    scanner.close();
 	    return Trips;
 	}
+	/**
+	 * readCSVAR reads a csv and retruns the trips in an Arraylist of InrixTripARs
+	 *  @param String of absolute path of the csv you wish to read
+	 */
+	public ArrayList<InrixTripAR> readCSVAR(String fileName) throws FileNotFoundException{
+		ArrayList<InrixTripAR> Trips = new ArrayList<InrixTripAR>();
+		Scanner scanner = new Scanner(new File(fileName));
+	    String line = scanner.nextLine();
+	    String nextline;
+	    InrixTripAR curTrip = new InrixTripAR();
+	    while(scanner.hasNext()){
+	    	nextline = scanner.nextLine();
+	    	String[] row = line.split(",");
+	    	String[] nextrow = nextline.split(",");
+	    	curTrip.add(row);
+	    	if (!row[5].equals(nextrow[5])) {
+	    		Trips.add(curTrip.deepCopy());
+	    		curTrip.clear();
+	    	}
+	    	line = nextline;
+	    }
+	    scanner.close();
+	    return Trips;
+	}
 	public ArrayList<InrixTripLL> testCSV(String fileName) throws IOException{
 		ArrayList<InrixTripLL> Trips = new ArrayList<InrixTripLL>();
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
