@@ -1,12 +1,14 @@
-<<<<<<< HEAD
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.*;
+import java.lang.instrument.Instrumentation;
+import java.lang.Object;
+import java.util.Collection;
+import java.util.List;
+
 
 
 public class InrixReader {
@@ -69,17 +71,7 @@ public class InrixReader {
 	    scanner.close();
 	    return trips;
 	}
-}
-=======
-import java.io.*;
-import java.lang.instrument.Instrumentation;
-import java.lang.Object;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
 
-
-public class InrixReader {
 	
 	public static void mergeSort(String filePath,File parentFile, File outFile) throws FileNotFoundException{
 		try{
@@ -180,4 +172,3 @@ public class InrixReader {
 
 }
 
->>>>>>> origin/master
