@@ -1,21 +1,23 @@
 
+
+
 public class InrixNode {
 	public int type;
 	public double time;
 	public double lat;
 	public double lon;
 	public int source;
-	public double ID;
+	public String ID;
 	int acData;
 	public InrixNode next;
 	public InrixNode previous;
 	public InrixNode(String[] data) {
 		this.type = Integer.parseInt(data[0]);
-		this.time = Double.parseDouble(data[1]);
+		this.time = datenum(data[1]);
 		this.lat = Double.parseDouble(data[2]);
 		this.lon =  Double.parseDouble(data[3]);
 		this.source = Integer.parseInt(data[4]);
-		this.ID =  Double.parseDouble(data[5]);
+		this.ID =  data[5];
 		this.acData = Integer.parseInt(data[6]);
 	}
 	public double distanceH(InrixNode node2) {
@@ -35,5 +37,14 @@ public class InrixNode {
 	}
 	public String toString() {
 		return type+","+time+","+lat+","+lon+","+source+","+ID+","+acData;
+	}
+	public double datenum(String date) {
+		//01234567890123456789
+		//2014-01-24 16:12:35.000
+		Double day = Double.parseDouble(date.substring(8, 9));
+		Double hour = Double.parseDouble(date.substring(11, 12));
+		Double min = Double.parseDouble(date.substring(14, 15));
+		Double sec = Double.parseDouble(date.substring(17, 18));
+		return day + hour/24 + min/24/60 + sec/24/60/60;
 	}
 }
