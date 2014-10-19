@@ -1,3 +1,5 @@
+import java.io.File;
+
 
 public class FileToCSV {
 	public void listFilesForFolder(final File folder) {

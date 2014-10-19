@@ -14,16 +14,16 @@ public class FilterFromOSMProgram {
 		InrixReader IR = new InrixReader();
 		String foldername = "C:/Users/SDM/Desktop/INRIX/INRIXFILTERED";
 		final File folder = new File(foldername);
-		Hashtable<Double,InrixTripLL> goodtrips = new Hashtable<Double,InrixTripLL>();
+		Hashtable<String,InrixTripLL> goodtrips = new Hashtable<String,InrixTripLL>();
 		for (final File fileEntry : folder.listFiles()) {
-			Hashtable<Double,InrixTripLL> trips = IR.readCSVhashtable(foldername + "/" + fileEntry.getName());
+			Hashtable<String,InrixTripLL> trips = IR.readCSVhashtable(foldername + "/" + fileEntry.getName());
 			Scanner scanner = new Scanner(new File("C:/Users/SDM/Desktop/INRIX/INRIX OSM Filter/INRIXOSMENDS.csv"));
 		    String line;
 		    System.out.println(trips.size());
 		    while(scanner.hasNext()){
 		    	line = scanner.nextLine();
 		    	String[] data = line.split(",");
-		    	Double ID = Double.parseDouble(data[0]);
+		    	String ID = data[0];
 		    	if (data[1].equals("1") && trips.containsKey(ID)) {
 			    	goodtrips.put(ID,trips.get(ID));	
 		    	}

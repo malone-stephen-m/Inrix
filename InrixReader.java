@@ -20,12 +20,12 @@ public class InrixReader {
 	    InrixTripLL curTrip = new InrixTripLL();
 	    while(scanner.hasNext()){
 	    	nextline = scanner.nextLine();
-	    	String[] row = line.split(",");
-	    	String[] nextrow = nextline.split(",");
+	    	String[] row = line.split("\t");
+	    	String[] nextrow = nextline.split("\t");
 	    	curTrip.add(row);
-	    	if (!row[5].equals(nextrow[5])) {
-	    		Trips.add(curTrip.deepCopy());
-	    		curTrip.clear();
+	    	if (!row[8].equals(nextrow[8])) {
+	    		Trips.add(curTrip);
+	    		curTrip = new InrixTripLL();
 	    	}
 	    	line = nextline;
 	    }
@@ -44,10 +44,10 @@ public class InrixReader {
 	    InrixTripAR curTrip = new InrixTripAR();
 	    while(scanner.hasNext()){
 	    	nextline = scanner.nextLine();
-	    	String[] row = line.split(",");
-	    	String[] nextrow = nextline.split(",");
+	    	String[] row = line.split("\t");
+	    	String[] nextrow = nextline.split("\t");
 	    	curTrip.add(row);
-	    	if (!row[5].equals(nextrow[5])) {
+	    	if (!row[8].equals(nextrow[8])) {
 	    		Trips.add(curTrip.deepCopy());
 	    		curTrip.clear();
 	    	}
@@ -56,39 +56,21 @@ public class InrixReader {
 	    scanner.close();
 	    return Trips;
 	}
-	public ArrayList<InrixTripLL> testCSV(String fileName) throws IOException{
-		ArrayList<InrixTripLL> Trips = new ArrayList<InrixTripLL>();
-		BufferedReader reader = new BufferedReader(new FileReader(fileName));
-		String line = null;
-		Scanner scanner = null;
- 
-        while ((line = reader.readLine()) != null) {
-            scanner = new Scanner(line);
-            scanner.useDelimiter(",");
-            while (scanner.hasNext()) {
-                String data = scanner.next();
-                System.out.print(Float.parseFloat(data) + ",");
-            }
-            System.out.print("\n");
-        }
-	    scanner.close();
-	    reader.close();
-	    return Trips;
-	}
-	public Hashtable<Double,InrixTripLL> readCSVhashtable(String fileName) throws FileNotFoundException {
-		Hashtable<Double,InrixTripLL> trips = new Hashtable<Double,InrixTripLL>();
+
+	public Hashtable<String,InrixTripLL> readCSVhashtable(String fileName) throws FileNotFoundException {
+		Hashtable<String,InrixTripLL> trips = new Hashtable<String,InrixTripLL>();
 		Scanner scanner = new Scanner(new File(fileName));
 	    String line = scanner.nextLine();
 	    String nextline;
 	    InrixTripLL curTrip = new InrixTripLL();
 	    while(scanner.hasNext()){
 	    	nextline = scanner.nextLine();
-	    	String[] row = line.split(",");
-	    	String[] nextrow = nextline.split(",");
+	    	String[] row = line.split("\t");
+	    	String[] nextrow = nextline.split("\t");
 	    	curTrip.add(row);
-	    	if (!row[5].equals(nextrow[5])) {
+	    	if (!row[8].equals(nextrow[8])) {
 	    		trips.put(curTrip.head.ID,curTrip.deepCopy());
-	    		curTrip.clear();
+	    		curTrip = new InrixTripLL();
 	    	}
 	    	line = nextline;
 	    }

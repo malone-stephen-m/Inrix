@@ -31,7 +31,7 @@ public class ClaculateStats {
 				System.out.println("time:" + time);
 				//speed in mph
 				double avgVel = dist/time*60;
-				double ID = t.get(0).ID;
+				String ID = t.get(0).ID;
 				String s = ID + "," + dist + "," + time + "," + avgVel + "\n";
 				writer.write(s);
 			}

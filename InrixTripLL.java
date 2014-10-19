@@ -16,7 +16,7 @@ public class InrixTripLL {
 	 * @param data; a string array of node data
 	 */
 	public void add(String[] data) {
-		try {
+		//try {
 			InrixNode node = new InrixNode(data);
 			if (head == null) {
 				head = node;
@@ -26,9 +26,10 @@ public class InrixTripLL {
 				tail = node;
 			}
 			size++;
-		} catch (Exception e) {
-			
-		}
+		//} catch (Exception e) {
+			//System.out.println(e.toString());
+		//}
+		
 	}
 	/**
 	 * returns the time between the first and last node in seconds
