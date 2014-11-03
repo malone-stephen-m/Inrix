@@ -16,7 +16,7 @@ public class InrixTripLL {
 	 * @param data; a string array of node data
 	 */
 	public void add(String[] data) {
-		//try {
+		try {
 			InrixNode node = new InrixNode(data);
 			if (head == null) {
 				head = node;
@@ -26,9 +26,9 @@ public class InrixTripLL {
 				tail = node;
 			}
 			size++;
-		//} catch (Exception e) {
-			//System.out.println(e.toString());
-		//}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 		
 	}
 	/**
@@ -53,6 +53,19 @@ public class InrixTripLL {
 			n = n.next;
 		}
 		return copy;
+	}
+	/**
+	 * a method to check if the trip passes three basic filters:
+	 * 1. the average time delay between nodes is < 20 seconds
+	 * 2. the trip has atleast 20 nodes
+	 * 3. the speed of the last point is below 10 mph
+	 * @return true if passes all filters, otherwise false
+	 */
+	public boolean passesFilters() {
+	boolean timeDelayReq = getAvgTimeDelay() < 20;
+	boolean numPointsReq = size > 20;
+	boolean tailSpeedReq = tail.acData < 10;
+	return timeDelayReq && numPointsReq && tailSpeedReq;
 	}
 	public String toString(){
 		InrixNode n = head;

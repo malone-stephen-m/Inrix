@@ -17,7 +17,7 @@ public class InrixTripAR {
 			InrixNode node = new InrixNode(data);
 			arr.add(node);
 		} catch (Exception e) {
-			
+			System.out.println(e.getMessage());
 		}
 	}
 	/**
@@ -46,7 +46,7 @@ public class InrixTripAR {
 		double lat1,lat2,lon1,lon2,deltaLat,deltaLon,a,c,dkm;
 		InrixNode node1, node2;
 		dkm = 0;
-		node2 = arr.get(i+1);
+		node2 = arr.get(i);
 		while (i < j) {
 			node1 = node2;
 			node2 = arr.get(i+1);
@@ -97,8 +97,8 @@ public class InrixTripAR {
 	 * @param double r: radius of the cut off
 	 * @return int i: index of the node at radius
 	 */
-	public int breachRadius(double r) {
-		InrixNode nodetail = arr.get(arr.size()-1);
+	public int breachRadius(double r, int end) {
+		InrixNode nodetail = arr.get(end);
 		int i = arr.size()-1;
 		InrixNode curnode;
 		double dist = 0;
@@ -106,8 +106,21 @@ public class InrixTripAR {
 			i--;
 			curnode = arr.get(i);
 			dist = nodetail.distanceH(curnode);
+			if (i == 0) {
+				return 0;
+			}
 		}
+		System.out.println(dist);
 		return i;
+	}
+	/**as crow flys distance as in a straight line from one index 
+	 * to the other
+	 * 
+	 */
+	public double distanceACF(int start, int end) {
+		InrixNode endnode = arr.get(end);
+		InrixNode stnode = arr.get(start);
+		return endnode.distanceH(stnode);
 	}
 	/**
 	 * return the time difference between two points in a trip
@@ -118,8 +131,14 @@ public class InrixTripAR {
 	public double timeDifference(int i, int j) {
 		return arr.get(j).time - arr.get(i).time;
 	}
+	/**
+	 * kph
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public double avgSpeed(int i, int j) {
-		 return distanceH(i,j)/timeDifference(i,j);
+		 return distanceH(i,j)/(timeDifference(i,j)*24);
 	}
 	/**
 	 * returns the time between the first and last node in seconds
@@ -134,6 +153,19 @@ public class InrixTripAR {
 	 */
 	public Double getAvgTimeDelay() {
 		return this.getTripDuration()/arr.size();
+	}
+	public int removeSandwiches(){
+        int size=arr.size();
+        for(int j = size - 1; j >= 0; j--){
+                  if(this.get(j).acData > 5){
+                        if (j == size -1) {
+                        	return j;
+                        } else {
+                        	return j + 1;
+                        }
+                  }
+        }
+        return 0;
 	}
 	/**
 	 * returns a deep copy of the trip array

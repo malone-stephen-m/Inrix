@@ -17,7 +17,7 @@ public class InrixWriter {
 	            readers[i] = new BufferedReader(new FileReader(inFiles[i]));
 	            String line = readers[i].readLine();
 	            if (line!= null){
-	            	treeMap.put(new InrixComp(line.split(",")), Integer.valueOf(i));
+	            	treeMap.put(new InrixComp(line.split("\t")), Integer.valueOf(i));
 	            }  
 	         }
 
@@ -28,7 +28,7 @@ public class InrixWriter {
 
 	            String line = readers[fileIndex].readLine();
 	            if (line != null)
-	               treeMap.put(new InrixComp(line.split(",")), Integer.valueOf(fileIndex));
+	               treeMap.put(new InrixComp(line.split("\t")), Integer.valueOf(fileIndex));
 	         }
 	         writer.close();
 	      }
@@ -48,6 +48,7 @@ public class InrixWriter {
             	File theDir = new File(filePath + "Splits");
             	if (!theDir.exists()) {
             	    System.out.println("creating directory: " + "Splits");
+            	    System.out.println(theDir.getPath().toString());
             	    try{
             	        theDir.mkdir();
             	     } catch(SecurityException se){

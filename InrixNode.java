@@ -15,14 +15,23 @@ public class InrixNode {
 	int acData;
 	public InrixNode next;
 	public InrixNode previous;
+//	public InrixNode(String[] data) {
+//		this.type = Integer.parseInt(data[7]);
+//		this.time = datenum(data[2]);
+//		this.lat = Double.parseDouble(data[3]);
+//		this.lon =  Double.parseDouble(data[4]);
+//		this.source = data[9];
+//		this.ID =  data[8];
+//		this.acData = Integer.parseInt(data[5]);
+//	}
 	public InrixNode(String[] data) {
-		this.type = Integer.parseInt(data[7]);
-		this.time = datenum(data[2]);
-		this.lat = Double.parseDouble(data[3]);
-		this.lon =  Double.parseDouble(data[4]);
-		this.source = data[9];
-		this.ID =  data[8];
-		this.acData = Integer.parseInt(data[5]);
+	this.type = Integer.parseInt(data[0]);
+	this.time = datenum(data[1]);
+	this.lat = Double.parseDouble(data[2]);
+	this.lon =  Double.parseDouble(data[3]);
+	this.source = data[4];
+	this.ID =  data[5];
+	this.acData = Integer.parseInt(data[6]);
 	}
 	public double distanceH(InrixNode node2) {
 		double lat1,lat2,lon1,lon2,deltaLat,deltaLon,a,c,dkm;
@@ -45,6 +54,9 @@ public class InrixNode {
 	public double datenum(String date) {
 		//01234567890123456789
 		//2014-01-24 16:12:35.000
+		if (date.length() < 19) {
+			return Double.parseDouble(date);
+		}
 		Double day = Double.parseDouble(date.substring(8, 10));
 		Double hour = Double.parseDouble(date.substring(11, 13));
 		Double min = Double.parseDouble(date.substring(14, 16));

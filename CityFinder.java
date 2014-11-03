@@ -17,6 +17,7 @@ public class CityFinder {
 	/**
 	 * upon instantiation, cities are loaded and csv files for them are formed in
 	 * the folder specified
+	 * TODO change the bounding box of SAN FRAN
 	 * @throws IOException
 	 * @param folder name for the folder in which the city files will be stored
 	 */
@@ -31,7 +32,7 @@ public class CityFinder {
 		cities.add(new City("Philadelphia",3392,-8451,3359,-8420,foldername));
 		cities.add(new City("San Diego",3392,-8451,3359,-8420,foldername));
 		cities.add(new City("Dallas",3392,-8451,3359,-8420,foldername));
-		cities.add(new City("San Francisco",3820,-12302,3724,-12143,foldername));
+		cities.add(new City("San Francisco",3900,-12375,3600,-11907,foldername));
 		cities.add(new City("Seattle",3392,-8451,3359,-8420,foldername));
 		cities.add(new City("Washington",3392,-8451,3359,-8420,foldername));
 		cities.add(new City("Boston",3392,-8451,3359,-8420,foldername));
@@ -47,9 +48,9 @@ public class CityFinder {
 	 * @return the writer to the city's file
 	 */
 	public BufferedWriter findCity(double lat, double lon) {
-		lat = lat * 100;
-		lon = lon * 100;
 		if (isUSA(lat,lon)) {
+			lat = lat * 100;
+			lon = lon * 100;
 			for (City c : cities) {
 				if (c.p.contains(lat,lon)) {
 					return c.bw;
@@ -90,7 +91,10 @@ public class CityFinder {
 			this.bw = new BufferedWriter(new FileWriter(new File(foldername+name+".csv")));
 		}
 	}
-	private boolean isUSA(double lat, double lon) {
+	public boolean isUSA(double lat, double lon) {
+		lat = lat * 100;
+		lon = lon * 100;
+		//System.out.println("lat: " + lat + " lon: " + lon);
 		if (lon <-6264 && lon > -12662) {
 			if (lat > 2300 && lat < 5000) {
 				return true;

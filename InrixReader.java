@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class InrixReader {
-	public ArrayList<InrixTripLL> readCSV(String fileName) throws FileNotFoundException{
+	public ArrayList<InrixTripLL> readTSV(String fileName) throws FileNotFoundException{
 		ArrayList<InrixTripLL> Trips = new ArrayList<InrixTripLL>();
 		Scanner scanner = new Scanner(new File(fileName));
 	    String line = scanner.nextLine();
@@ -32,6 +32,44 @@ public class InrixReader {
 	    scanner.close();
 	    return Trips;
 	}
+	public ArrayList<InrixTripLL> readCSV(String fileName) throws FileNotFoundException{
+		ArrayList<InrixTripLL> Trips = new ArrayList<InrixTripLL>();
+		Scanner scanner = new Scanner(new File(fileName));
+	    String line = scanner.nextLine();
+	    String nextline;
+	    InrixTripLL curTrip = new InrixTripLL();
+	    while(scanner.hasNext()){
+	    	nextline = scanner.nextLine();
+	    	String[] row = line.split(",");
+	    	String[] nextrow = nextline.split(",");
+	    	curTrip.add(row);
+	    	if (!row[5].equals(nextrow[5])) {
+	    		Trips.add(curTrip);
+	    		curTrip = new InrixTripLL();
+	    	}
+	    	line = nextline;
+	    }
+	    scanner.close();
+	    return Trips;
+	}
+	/**
+	 * A method to read a csv of trips ends and return them as an 
+	 * Array List of Inrix Nodes
+	 * @param file name
+	 * @return the trip ends as inrix nodes in an Arraylist
+	 */
+	public ArrayList<InrixNode> readTripEnds(String filename) throws FileNotFoundException{
+		ArrayList<InrixNode> tripEnds = new ArrayList<InrixNode>();
+		Scanner scanner = new Scanner(new File(filename));
+		String line;
+		while(scanner.hasNext()){
+			line = scanner.nextLine();
+			String[] row = line.split(",");
+			tripEnds.add(new InrixNode(row));
+		}
+		scanner.close();
+		return tripEnds;
+	}
 	/**
 	 * readCSVAR reads a csv and retruns the trips in an Arraylist of InrixTripARs
 	 *  @param String of absolute path of the csv you wish to read
@@ -44,10 +82,11 @@ public class InrixReader {
 	    InrixTripAR curTrip = new InrixTripAR();
 	    while(scanner.hasNext()){
 	    	nextline = scanner.nextLine();
-	    	String[] row = line.split("\t");
-	    	String[] nextrow = nextline.split("\t");
+	    	String[] row = line.split(",");
+	    	String[] nextrow = nextline.split(",");
 	    	curTrip.add(row);
-	    	if (!row[8].equals(nextrow[8])) {
+	    	//change to 8 for new files
+	    	if (!row[5].equals(nextrow[5])) {
 	    		Trips.add(curTrip.deepCopy());
 	    		curTrip.clear();
 	    	}
@@ -77,8 +116,8 @@ public class InrixReader {
 	    scanner.close();
 	    return trips;
 	}
-
 	
+
 	public static void mergeSort(String filePath,File parentFile, File outFile) throws FileNotFoundException{
 		try{
 			List<InrixComp> Trips = new ArrayList<InrixComp>();
@@ -88,12 +127,12 @@ public class InrixReader {
 		    int numSplits = 0;
 		    
 		    while((line = br.readLine())!=null){
-		    	String[] splitz = line.split(",");
+		    	String[] splitz = line.split("\t");
 		    		if (Trips.size()<100000){
-		    			if (splitz.length >6){
+		    			//if (splitz.length >6){
 		    			InrixComp curLine = new InrixComp(splitz);
 				    	Trips.add(curLine);
-		    			}
+		    			//}
 				    }else{
 				    	System.out.println(("Printing" + numSplits));
 				    	iw.convertAndPrint(Trips, filePath, true, true, numSplits);

@@ -12,7 +12,7 @@ public class RunFilterInrixData {
 		//Starttime
 		long startTime = System.currentTimeMillis();
 		//Folder of the split inrix csvs
-		String foldername = "C:/Users/SDM/Desktop/INRIX/Day1";
+		String foldername = "C:/Users/SDM/Desktop/INRIX/SortedAndMergedSFO_points_Jan2014";
 		final File folder = new File(foldername);
 		InrixReader IR = new InrixReader();
 		CityFinder cityfinder = new CityFinder("C:/Users/SDM/Desktop/INRIX/CityFiles/");
@@ -28,13 +28,15 @@ public class RunFilterInrixData {
 			int numPointsFail = 0;
 			int tailSpeedFail = 0;
 			int cityPass = 0;
+			int USA = 0;
 			for (int i = 1; i < trips.size();) {
 				//The sorting criteria
 				InrixTripLL t = new InrixTripLL();
 				t = trips.get(i);
-				boolean timeDelayReq = t.getAvgTimeDelay() < 13;
+				boolean timeDelayReq = t.getAvgTimeDelay() < 20;
 				boolean numPointsReq = t.size > 20;
 				boolean tailSpeedReq = t.tail.acData < 10;
+				boolean isUSA = cityfinder.isUSA(t.tail.lat, t.tail.lon);
 				//Debug
 				if (!timeDelayReq) {
 					timeDelayFail++;
@@ -45,6 +47,9 @@ public class RunFilterInrixData {
 				if (!tailSpeedReq) {
 					tailSpeedFail++;
 				}
+				if (isUSA) {
+					USA++;
+				}
 				//END DEBUG
 				boolean PassesRequirements = timeDelayReq && numPointsReq && tailSpeedReq;
 				if (PassesRequirements) {
@@ -52,7 +57,6 @@ public class RunFilterInrixData {
 					//find what city the trip is in
 					writer = cityfinder.findCity(t.tail.lat, t.tail.lon);
 					if (writer != null) {
-						System.out.println("size: " + t.size);
 						writer.write(t.toString());
 						cityPass++;
 					}
@@ -65,8 +69,9 @@ public class RunFilterInrixData {
 			System.out.println("Number of Fails Tail Speed Filter: " + tailSpeedFail);
 			System.out.println("Number of Trips that Pass : " + numPasses);
 			System.out.println("Number of Trips that Pass City Filters: " + cityPass);
+			System.out.println("Number of USA Trips: " + USA);
 			System.out.println("Took "+((endTime - startTime)/1000) + "s"); 
-			cityfinder.closeWriters();
+			
 			trips.clear();
 //			System.out.println(trips.size());
 //			BufferedWriter writer = new BufferedWriter(new FileWriter("C:/Users/SDM/Desktop/INRIX/INRIXENDS/INRIXENDS.csv", true));
@@ -82,5 +87,6 @@ public class RunFilterInrixData {
 //		    writer.close();
 //		    j++;
 		}
+		cityfinder.closeWriters();
 	}
 }
