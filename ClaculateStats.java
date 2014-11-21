@@ -10,12 +10,13 @@ public class ClaculateStats {
 	public static void main(String[] args) throws IOException {
 		InrixReader IR = new InrixReader();
 		//read the good trips
-		ArrayList<InrixTripAR> trips = IR.readCSVAR("C:/Users/SDM/Desktop/INRIX/CityFiles/San Francisco.csv");
+		ArrayList<InrixTripAR> trips = IR.readCSVAR("C:/Users/SDM/Desktop/INRIX/CityFiles/SortedAndMergedSanJose_Automotive_2013.csv");
 		//write the stats to a file
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/SanFranStats.csv")));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityStats/SanJoseStats.csv")));
 		//for each trip write down its stats
-		int i = 0;
 		for (InrixTripAR t : trips) {
+			double lat = t.get(t.size()-1).lat;
+			double lon = t.get(t.size()-1).lon;
 			//System.out.println("i:" + i);
 			//System.out.println("size: " + t.size());
 			int end = t.removeSandwiches();
@@ -46,7 +47,7 @@ public class ClaculateStats {
 					//speed in mph
 					double avgVel = dist/time*60;
 					String ID = t.get(0).ID;
-					String s = ID + "," + dist + "," + time + "," + avgVel;
+					String s = ID + "," + lat + "," + lon + "," + dist + "," + time + "," + avgVel;
 					writer.write(s);
 				
 					//.5 miles
@@ -78,7 +79,6 @@ public class ClaculateStats {
 					}
 				}
 			}
-			i++;
 		}
 		writer.close();
 	}

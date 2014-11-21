@@ -12,16 +12,17 @@ public class RunFilterInrixData {
 		//Starttime
 		long startTime = System.currentTimeMillis();
 		//Folder of the split inrix csvs
-		String foldername = "C:/Users/SDM/Desktop/INRIX/SortedAndMergedSFO_points_Jan2014";
+		String foldername = "C:/Users/SDM/Desktop/INRIX/RawData";
 		final File folder = new File(foldername);
 		InrixReader IR = new InrixReader();
-		CityFinder cityfinder = new CityFinder("C:/Users/SDM/Desktop/INRIX/CityFiles/");
-		BufferedWriter writer;
+		//CityFinder cityfinder = new CityFinder("C:/Users/SDM/Desktop/INRIX/CityFiles/");
+		//BufferedWriter writer;
+		//BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityFiles/DallasAfterFilter.csv")));
 		//for each split open it, filter it, and write what is filtered
-		int j = 1;
 		for (final File fileEntry : folder.listFiles()) {
 			System.out.println("File: " + fileEntry.toString());
 			ArrayList<InrixTripLL> trips = IR.readCSV(foldername + "/" + fileEntry.getName());
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityFiles/" + fileEntry.getName())));
 			System.out.println("Total Trips: " + trips.size());
 			int numPasses = 0;
 			int timeDelayFail = 0;
@@ -33,10 +34,9 @@ public class RunFilterInrixData {
 				//The sorting criteria
 				InrixTripLL t = new InrixTripLL();
 				t = trips.get(i);
-				boolean timeDelayReq = t.getAvgTimeDelay() < 20;
-				boolean numPointsReq = t.size > 20;
-				boolean tailSpeedReq = t.tail.acData < 10;
-				boolean isUSA = cityfinder.isUSA(t.tail.lat, t.tail.lon);
+				boolean timeDelayReq = t.getAvgTimeDelay() < 25;
+				boolean numPointsReq = t.size > 10;
+				boolean tailSpeedReq = t.tail.acData < 20;
 				//Debug
 				if (!timeDelayReq) {
 					timeDelayFail++;
@@ -47,19 +47,17 @@ public class RunFilterInrixData {
 				if (!tailSpeedReq) {
 					tailSpeedFail++;
 				}
-				if (isUSA) {
-					USA++;
-				}
 				//END DEBUG
 				boolean PassesRequirements = timeDelayReq && numPointsReq && tailSpeedReq;
 				if (PassesRequirements) {
 					numPasses++;
 					//find what city the trip is in
-					writer = cityfinder.findCity(t.tail.lat, t.tail.lon);
-					if (writer != null) {
-						writer.write(t.toString());
-						cityPass++;
-					}
+//					writer = cityfinder.findCity(t.tail.lat, t.tail.lon);
+//					if (writer != null) {
+//						writer.write(t.toString());
+//						cityPass++;
+//					}
+					writer.write(t.toString());
 				}
 				i++;
 			}
@@ -78,15 +76,15 @@ public class RunFilterInrixData {
 //		    for (InrixTripLL t : trips) {
 //		    	writer.write(t.tail.toString() + "\n");
 //		    }
-//		    writer.close();
+		    writer.close();
 //		    outName = "C:/Users/SDM/Desktop/INRIX/INRIXFILTERED/" + "filteredEnd" + j + ".csv";
 //		    writer = new BufferedWriter(new FileWriter(new File(outName)));
 //		    for (InrixTripLL t : trips) {
 //		    	writer.write(t.toString());
 //		    }
-//		    writer.close();
 //		    j++;
 		}
-		cityfinder.closeWriters();
+		//cityfinder.closeWriters();
+//		writer.close();
 	}
 }
