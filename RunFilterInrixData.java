@@ -19,10 +19,12 @@ public class RunFilterInrixData {
 		//BufferedWriter writer;
 		//BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityFiles/DallasAfterFilter.csv")));
 		//for each split open it, filter it, and write what is filtered
+		int totalTrips = 0;
+		int totalPasses = 0;
 		for (final File fileEntry : folder.listFiles()) {
 			System.out.println("File: " + fileEntry.toString());
 			ArrayList<InrixTripLL> trips = IR.readCSV(foldername + "/" + fileEntry.getName());
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityFiles/" + fileEntry.getName())));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("C:/Users/SDM/Desktop/INRIX/CityFilesRound2/" + fileEntry.getName())));
 			System.out.println("Total Trips: " + trips.size());
 			int numPasses = 0;
 			int timeDelayFail = 0;
@@ -35,7 +37,7 @@ public class RunFilterInrixData {
 				InrixTripLL t = new InrixTripLL();
 				t = trips.get(i);
 				boolean timeDelayReq = t.getAvgTimeDelay() < 25;
-				boolean numPointsReq = t.size > 10;
+				boolean numPointsReq = t.size > 9;
 				boolean tailSpeedReq = t.tail.acData < 20;
 				//Debug
 				if (!timeDelayReq) {
@@ -70,6 +72,8 @@ public class RunFilterInrixData {
 			System.out.println("Number of USA Trips: " + USA);
 			System.out.println("Took "+((endTime - startTime)/1000) + "s"); 
 			
+			totalTrips += trips.size();
+			totalPasses += numPasses;
 			trips.clear();
 //			System.out.println(trips.size());
 //			BufferedWriter writer = new BufferedWriter(new FileWriter("C:/Users/SDM/Desktop/INRIX/INRIXENDS/INRIXENDS.csv", true));
@@ -84,6 +88,8 @@ public class RunFilterInrixData {
 //		    }
 //		    j++;
 		}
+		System.out.println("Total Trips: " + totalTrips);
+		System.out.println("Total Trips: " + totalPasses);
 		//cityfinder.closeWriters();
 //		writer.close();
 	}
